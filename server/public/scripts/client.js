@@ -28,7 +28,12 @@ $( document ).ready( function(){
   $('#viewKoalas').on('click', '.transfer-btn', function() {
     let id = $(this).data('id');
     updateTransfer(id);
-  }) // end update Transfer
+  }) // end transfer button click
+
+  $('#viewKoalas').on('click', '.editBtn', function() {
+    let id = $(this).data('id');
+    getSingleKoala(id);
+  }) // end edit button click
 }); // end doc ready
 
 function getKoalas(){
@@ -120,3 +125,43 @@ function updateTransfer(id) {
     console.log(error);
   }) // end fail
 } // end updateTransfer
+
+// get koala by id
+function getSingleKoala(id) {
+  $.ajax({
+    type: 'GET',
+    url: `/koala/${id}`,
+  }) // end GET
+  .done((response) => {
+    console.log('edit koala');
+    showKoalaInfo(response);
+  }) // end done
+  .fail(function(error){
+    console.log(error);
+  })
+} // end editKoala
+
+function showKoalaInfo(koala) {
+  $('#nameIn').val(koala[0].name);
+  $('#ageIn').val(koala[0].age);
+  $('#genderIn').val(koala[0].gender);
+  $('#readyForTransferIn').val(koala[0].ready_to_transfer);
+  $('#notesIn').val(koala[0].notes);
+} // end showKoalaInfo
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// screen

@@ -67,6 +67,40 @@ router.get('/', function(request, response){
       })
   })
 
+  router.get('/:id', (request, response) => {
+    const id = request.params.id;
+    const sqlText = 'Select * FROM koala WHERE id=$1';
+    pool.query(sqlText, [id])
+    .then((result) => {
+        console.log('found koala by id');
+        response.send(result.rows);
+    })
+    .catch((error) => {
+        console.log('error on get by id');
+        response.sendStatus(500);
+    })
+  }) // end get by id
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
