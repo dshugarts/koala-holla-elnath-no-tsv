@@ -64,11 +64,16 @@ function displayKoalas(koalas) {
 
     let $tr = $('<tr>');
     for(let col=0; col<keys.length; col++) {
-      $tr.append($('<td>').attr('id', keys[col]).text(koalas[row][keys[col]])[0]);
+        //$tr.append($('<td>').attr('id', keys[col]).text(koalas[row][keys[col]]), $('<button>').data('id', koalas[row].id).addClass('transfer-btn').text('Ready for Transfer')[0]);
+        $tr.append($('<td>').addClass(keys[col]).text(koalas[row][keys[col]])[0]);
+      
     } // end col loop
-      $tr.append($('<button>').data('id', koalas[row].id).text('Delete').addClass('deleteBtn'));
-
+    $tr.append($('<button>').data('id', koalas[row].id).text('Delete').addClass('deleteBtn'));
     $tableBody.append($tr);
+    if($('.ready_to_transfer:last').text() === 'N' ){
+      $('.ready_to_transfer:last').append($('<button>').data('id', koalas[row].id).addClass('transfer-btn').text('Ready for Transfer')[0]);
+
+    }
   } // end row loop
 } // end displayKoalas
 
