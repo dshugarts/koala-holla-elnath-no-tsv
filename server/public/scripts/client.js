@@ -34,6 +34,10 @@ $( document ).ready( function(){
     let id = $(this).data('id');
     getSingleKoala(id);
   }) // end edit button click
+
+  $('#addKoala').on('click', '#updateBtn', function() {
+ 
+  }) // end update button click
 }); // end doc ready
 
 function getKoalas(){
@@ -147,6 +151,7 @@ function showKoalaInfo(koala) {
   $('#genderIn').val(koala[0].gender);
   $('#readyForTransferIn').val(koala[0].ready_to_transfer);
   $('#notesIn').val(koala[0].notes);
+  $('#addKoala').append('<button id="updateBtn">Update Koala Info</button>');
 } // end showKoalaInfo
 
 
