@@ -73,20 +73,20 @@ Your final product may look something like this:
     - [x] age
     - [x] ready_to_transfer
     - [x] notes
-- [ ] Web app that displays the database taeateble on the DOM
-    - [ ] User can add new Koala to database
+- [x] Web app that displays the database taeateble on the DOM
+    - [x] User can add new Koala to database
 
 ## Hard Mode
-- [ ] On the DOM, user can mark a Koala for transfer
-    - [ ] Button for each row that reads `Ready For Transfer`
-    - [ ] When clicking the button, it will update the database on the specific Koala showing it is `Ready For Transfer`
-    - [ ] `Ready For Transfer` only appears for Koalas that haven't been marked `Ready For Transfer`
-- [ ] User can delete koala from the database
-- [ ] Add styling with bootstrap
+- [x] On the DOM, user can mark a Koala for transfer
+    - [x] Button for each row that reads `Ready For Transfer`
+    - [x] When clicking the button, it will update the database on the specific Koala showing it is `Ready For Transfer`
+    - [x] `Ready For Transfer` only appears for Koalas that haven't been marked `Ready For Transfer`
+- [x] User can delete koala from the database
+- [x] Add styling with bootstrap
 
 ## Pro Mode
 - [ ] User can edit existing Koalas
 - [ ] Create a toggle display for Koala's `Ready for Transfer`
 - [ ] Add Form Validation
 - [ ] Additional Styling
-- [ ] Create a README.md file
+- [x] Create a README.md file
