@@ -80,7 +80,7 @@ function displayKoalas(koalas) {
     $tr.append($('<button>').data('id', koalas[row].id).text('Delete').addClass('deleteBtn'));
     $tableBody.append($tr);
     if($('.ready_to_transfer:last').text() === 'N' ){
-      $('.ready_to_transfer:last').append($('<button>').data('id', koalas[row].id).addClass('transfer-btn').text('Ready for Transfer')[0]);
+      $('.ready_to_transfer:last').append($('<button>').data('id', koalas[row].id).addClass('transfer-btn ml-2').text('Ready for Transfer')[0]);
 
     }
   } // end row loop
