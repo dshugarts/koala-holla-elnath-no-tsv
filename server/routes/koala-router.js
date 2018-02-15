@@ -53,7 +53,19 @@ router.get('/', function(request, response){
     })
   }) // end delete
 
-
+  router.put('/:id', (request, response) => {
+    const id = request.params.id;
+    const sqlText = `UPDATE koala SET ready_to_transfer=$1 WHERE id=$2`;
+    pool.query(sqlText, ['Y', id])
+      .then((result) => {
+        console.log(`Updated koala ${id} with status Y`);
+        response.sendStatus(200);
+      })
+      .catch( (error) => {
+        console.log('Error on update song');
+        response.sendStatus(500);
+      })
+  })
 
 
 

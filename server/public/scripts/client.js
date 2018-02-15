@@ -25,6 +25,10 @@ $( document ).ready( function(){
     const koalaId = $(this).data('id');
     deleteKoala(koalaId);
   }) // end delete koala
+  $('#viewKoalas').on('click', '.transfer-btn', function() {
+    let id = $(this).data('id');
+    updateTransfer(id);
+  }) // end update Transfer
 }); // end doc ready
 
 function getKoalas(){
@@ -95,3 +99,18 @@ function deleteKoala(id) {
     console.log('error', error);
   }) // end fail
 } // end deleteKoala
+
+function updateTransfer(id) {
+  $.ajax({
+    type: 'PUT',
+    url: `/koala/${id}`,
+    data: {id}
+  }) // end AJAX
+  .done(function (response) {
+    console.log('Updated koala transfer status');
+    getKoalas();
+  }) // end done
+  .fail(function (error){
+    console.log(error);
+  }) // end fail
+} // end updateTransfer
