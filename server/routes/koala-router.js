@@ -5,7 +5,7 @@ const pool = require('../modules/pool');
 const bodyParser = require('body-parser');
 
 router.get('/', function(request, response){
-    const sqlText = 'SELECT * FROM koala';
+    const sqlText = 'SELECT * FROM koala ORDER BY id';
     pool.query(sqlText)
       // query was successful
       .then(function(result) {
