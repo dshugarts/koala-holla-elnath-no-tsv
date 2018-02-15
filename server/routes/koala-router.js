@@ -40,7 +40,18 @@ router.get('/', function(request, response){
       })
   })
 
-
+  router.delete('/:id', (request, response) => {
+    const sqlText = `DELETE FROM koala WHERE id=$1`;
+    const id =  request.params.id;
+    pool.query(sqlText, [id]).then((result) => {
+        console.log('Deleted Koala', id);
+        response.sendStatus(200);
+    }) // end success
+    .catch((error) => {
+        console.log('error in router.delete', error);
+        response.sendStatus(500);
+    })
+  }) // end delete
 
 
 

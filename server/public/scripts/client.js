@@ -21,6 +21,10 @@ $( document ).ready( function(){
     // call saveKoala with the new obejct
     saveKoala( objectToSend );
   }); //end addButton on click
+  $('#viewKoalas').on('click', '.deleteBtn', function() {
+    const koalaId = $(this).data('id');
+    deleteKoala(koalaId);
+  }) // end delete koala
 }); // end doc ready
 
 function getKoalas(){
@@ -62,6 +66,22 @@ function displayKoalas(koalas) {
     for(let col=0; col<keys.length; col++) {
       $tr.append($('<td>').attr('id', keys[col]).text(koalas[row][keys[col]])[0]);
     } // end col loop
+      $tr.append($('<button>').data('id', koalas[row].id).text('Delete').addClass('deleteBtn'));
+
     $tableBody.append($tr);
   } // end row loop
 } // end displayKoalas
+
+function deleteKoala(id) {
+  $.ajax({
+    type: 'DELETE',
+    url: `/koala/${id}`,
+  }) // end AJAX
+  .done((response) => {
+    console.log('Koala deleted');
+    getKoalas();
+  }) // end done
+  .fail((error) => {
+    console.log('error', error);
+  }) // end fail
+} // end deleteKoala
