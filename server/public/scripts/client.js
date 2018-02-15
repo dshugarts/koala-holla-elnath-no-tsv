@@ -35,9 +35,6 @@ $( document ).ready( function(){
     getSingleKoala(id);
   }) // end edit button click
 
-  $('#addKoala').on('click', '#updateBtn', function() {
- 
-  }) // end update button click
 }); // end doc ready
 
 function getKoalas(){
@@ -138,7 +135,8 @@ function getSingleKoala(id) {
   }) // end GET
   .done((response) => {
     console.log('edit koala');
-    showKoalaInfo(response);
+    
+  showKoalaInfo(response);
   }) // end done
   .fail(function(error){
     console.log(error);
@@ -146,22 +144,40 @@ function getSingleKoala(id) {
 } // end editKoala
 
 function showKoalaInfo(koala) {
+  let newKoala = {
+    id: koala[0].id,
+    name: koala[0].name,
+    age: koala[0].age,
+    gender: koala[0].gender, 
+    ready_to_transfer: koala[0].ready_to_transfer,
+    notes: koala[0].notes
+  };
+
   $('#nameIn').val(koala[0].name);
   $('#ageIn').val(koala[0].age);
   $('#genderIn').val(koala[0].gender);
   $('#readyForTransferIn').val(koala[0].ready_to_transfer);
   $('#notesIn').val(koala[0].notes);
   $('#addKoala').append('<button id="updateBtn">Update Koala Info</button>');
+
+  $('#updateBtn').on('click', function() {
+    
+    updateKoala(newKoala);
+  }) // end update button click
 } // end showKoalaInfo
 
 
 
+function updateKoala(newKoala) {
+  console.log(newKoala);
+
+} // end updateTransfer
 
 
 
 
 
-
+// end of class push
 
 
 
