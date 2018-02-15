@@ -27,20 +27,22 @@ function getKoalas(){
   console.log( 'in getKoalas' );
   // ajax call to server to get koalas
   $.ajax({
-    url: '/koalas',
+    url: '/koala',
     type: 'GET',
     success: function( data ){
       console.log( 'got some koalas: ', data );
+        // display on DOM with buttons that allow edit of each
+        displayKoalas(data);
     } // end success
   }); //end ajax
-  // display on DOM with buttons that allow edit of each
+
 } // end getKoalas
 
 function saveKoala( newKoala ){
   console.log( 'in saveKoala', newKoala );
   // ajax call to server to get koalas
   $.ajax({
-    url: '/koalas',
+    url: '/koala',
     type: 'POST',
     data: newKoala,
     success: function( data ){
@@ -48,3 +50,17 @@ function saveKoala( newKoala ){
     } // end success
   }); //end ajax
 }
+
+function displayKoalas(koalas) {
+  let $tableBody = $('#viewKoalas');
+  $tableBody.empty();
+  for(let row=0; row<koalas.length; row++) {
+    let keys = Object.keys(koalas[row]);
+
+    let $tr = $('<tr>');
+    for(let col=0; col<keys.length; col++) {
+      $tr.append($('<td>').attr('id', keys[col]).text(koalas[row][keys[col]])[0]);
+    } // end col loop
+    $tableBody.append($tr);
+  } // end row loop
+} // end displayKoalas
