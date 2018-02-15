@@ -32,7 +32,11 @@ $( document ).ready( function(){
 
   $('#viewKoalas').on('click', '.editBtn', function() {
     let id = $(this).data('id');
-    getSingleKoala(id);
+    // write a function that converts all of the table fields into input fields
+    //  - each input will hold the current table cell data as a value that can be edited
+    prepareForEdit(id);
+
+    //getSingleKoala(id);
   }) // end edit button click
 
 }); // end doc ready
@@ -61,6 +65,7 @@ function saveKoala( newKoala ){
     data: newKoala,
     success: function( data ){
       console.log( 'got some koalas: ', data );
+      getKoalas();
       $('#nameIn').val('');
       $('#ageIn').val('');
       $('#genderIn').val('');
@@ -77,7 +82,7 @@ function displayKoalas(koalas) {
   for(let row=0; row<koalas.length; row++) {
     let keys = Object.keys(koalas[row]);
   
-    let $tr = $('<tr>');
+    let $tr = $('<tr>').attr('id', `tr${row + 1}`);
     for(let col=0; col<keys.length + 2; col++) {
         //$tr.append($('<td>').attr('id', keys[col]).text(koalas[row][keys[col]]), $('<button>').data('id', koalas[row].id).addClass('transfer-btn').text('Ready for Transfer')[0]);
         if(col === keys.length){
@@ -167,23 +172,21 @@ function showKoalaInfo(koala) {
 } // end showKoalaInfo
 
 
-
 function updateKoala(newKoala) {
   console.log(newKoala);
 
 } // end updateTransfer
 
 
+ // write a function that converts all of the table fields into input fields
+    //  - each input will hold the current table cell data as a value that can be edited
+function prepareForEdit(id){
+  // 
+  $(`#tr${id} .gender`).empty().append($(`<select>`).attr({'id':'genderIn'}).append($('<option>').val('').text('M')));
+    /*< option value = "" disabled selected > Gender</option >
+    <option value="M">M</option>
+    <option value="F">F</option>
+      </select >`));
+  */
+}
 
-// on jacobPut
-
-
-// end of class push
-
-
-
-
-
-
-
-// screen
