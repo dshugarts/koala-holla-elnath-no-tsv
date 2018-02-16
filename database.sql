@@ -5,7 +5,7 @@
 CREATE TABLE koala (
 	id serial primary key,
 	name char(30),
-	gender char(1),
+	gender char(10),
 	age integer,
 	ready_to_transfer char(1),
 	notes varchar(255)

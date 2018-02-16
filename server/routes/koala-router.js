@@ -65,7 +65,7 @@ router.get('/', function(request, response){
         console.log('Error on update song');
         response.sendStatus(500);
       })
-  })
+  }) // END router.PUT for /:id
 
   router.get('/:id', (request, response) => {
     const id = request.params.id;
@@ -82,13 +82,19 @@ router.get('/', function(request, response){
   }) // end get by id
 
 
-
-
-
-
-
-
-
+  router.put('/edit/:id', function(req, res) {
+    const id = req.params.id;
+    const newKoala = req.body;
+    console.log(newKoala);
+    
+    const sqlText = `UPDATE koala SET name=$1, gender=$2, age=$3, ready_to_transfer=$4, notes=$5 WHERE id=$6`;
+    pool.query(sqlText, [newKoala.name, newKoala.gender, newKoala.age, newKoala.ready_to_transfer, newKoala.notes, newKoala.id])
+    .then(function(result) {
+      res.sendStatus(200);
+    }).catch(function(error){
+      res.sendStatus(500);
+    });
+  }); // END router.PUT for /edit/:id
 
 
 
