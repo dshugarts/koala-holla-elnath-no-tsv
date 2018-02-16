@@ -34,12 +34,29 @@ $( document ).ready( function(){
 
   $('#viewKoalas').on('click', '.editBtn', function() {
     let id = $(this).data('id');
-    $(`#tr${id}`).append($('<button>').addClass('saveEdit').data('id', id).text('save'), $('<button>').addClass('cancelEdit').data('id', id).text('cancel'));
+    $(this).hide();
+    $(`.editButtons${id} `).append($('<button>').addClass('saveEdit').data('id', id).text('finish'));
     prepareForEdit(id); 
     
+  }); // end edit button click
 
-    //getSingleKoala(id);
-  }) // end edit button click
+  $('#viewKoalas').on('click', '.saveEdit', function(){
+    let id = $(this).data('id');
+    console.log(id);
+    
+    newKoala = {
+      id: $(this).data('id'),
+      name: $(`#tr${id} .name #nameIn`).val(),
+      gender: $(`#tr${id} .gender #genderIn`).val(),
+      age: $(`#tr${id} .age #ageIn`).val(),
+      ready_to_transfer: $(`#tr${id} .ready_to_transfer #readyForTransferIn`).val(),
+      notes: $(`#tr${id} .notes #notesIn`).val(),
+    }
+    console.log(newKoala);
+    
+    updateKoala(newKoala);
+    
+  });
 
 }); // end doc ready
 
@@ -90,7 +107,7 @@ function displayKoalas(koalas) {
         if(col === keys.length){
           $tr.append($('<td>').addClass(keys[col]).append($('<button>').data('id', koalas[row].id).text('Delete').addClass('deleteBtn')));
         } else if (col === keys.length +1) {
-          $tr.append($('<td>').addClass(keys[col]).append($('<button>').data('id', koalas[row].id).text('Edit Koala').addClass('editBtn')));
+          $tr.append($('<td>').addClass(`editButtons${row+1}`).append($('<button>').data('id', koalas[row].id).text('Edit Koala').addClass('editBtn')));
         } else {
           $tr.append($('<td>').addClass(keys[col]).text(koalas[row][keys[col]])[0]);
         }
@@ -176,6 +193,18 @@ function showKoalaInfo(koala) {
 
 function updateKoala(newKoala) {
   console.log(newKoala);
+  
+  $.ajax({
+    type: 'PUT',
+    url: `koala/edit/${newKoala.id}`, // this is the ID of the koala we want to change in the database
+    data: newKoala,
+  }).done(function(response){
+    console.log(response);
+    getKoalas();
+  }).fail(function(error){
+    console.log(error);
+    
+  })
 
 } // end updateTransfer
 
@@ -195,5 +224,7 @@ function prepareForEdit(id){
   $(`#tr${id} .ready_to_transfer`).empty().append($(`<select>`).attr({ 'id':'readyForTransferIn', 'value':readyForTransfer }).append($('<option>').val('Y').text('Y'), $('<option>').val('N').text('N')));
   $(`#tr${id} .notes`).empty().append($('<input>').attr({ 'type':'text', 'id':'notesIn' }).val(notes));
 
+  //console.log($(`#tr${id} #nameIn`).val());
+  
 }
 
