@@ -4,7 +4,6 @@ $( document ).ready( function(){
   console.log( 'JQ' );
   // load existing koalas on page load
   getKoalas();
-
   // add koala button click
   $( '#addButton' ).on( 'click', function(){
     console.log( 'in addButton on click' );
@@ -25,20 +24,19 @@ $( document ).ready( function(){
   $('#viewKoalas').on('click', '.deleteBtn', function() {
     const koalaId = $(this).data('id');
     deleteKoala(koalaId);
-  }) // end delete koala
+  }) // END .deleteBtn click
 
   $('#viewKoalas').on('click', '.transfer-btn', function() {
     let id = $(this).data('id');
     updateTransfer(id);
-  }) // end transfer button click
+  }) // END .transfer-btn click
 
   $('#viewKoalas').on('click', '.editBtn', function() {
     let id = $(this).data('id');
     $(this).hide();
     $(`.editButtons${id} `).append($('<button>').addClass('saveEdit').data('id', id).text('finish'));
     prepareForEdit(id); 
-    
-  }); // end edit button click
+  }); // END .editBtn click
 
   $('#viewKoalas').on('click', '.saveEdit', function(){
     let id = $(this).data('id');
@@ -52,13 +50,14 @@ $( document ).ready( function(){
       ready_to_transfer: $(`#tr${id} .ready_to_transfer #readyForTransferIn`).val(),
       notes: $(`#tr${id} .notes #notesIn`).val(),
     }
-    console.log(newKoala);
+    if(newKoala.ready_to_transfer === '-'){
+      alert('be sure to mark whether or not this Koala is ready to transfer!');
+    } else {
+      updateKoala(newKoala);
+    }
     
-    updateKoala(newKoala);
-    
-  });
-
-}); // end doc ready
+  }); // END .saveEdit onclick
+}); // END document.ready
 
 function getKoalas(){
   console.log( 'in getKoalas' );
@@ -70,10 +69,9 @@ function getKoalas(){
       console.log( 'got some koalas: ', data );
         // display on DOM with buttons that allow edit of each
         displayKoalas(data);
-    } // end success
-  }); //end ajax
-
-} // end getKoalas
+    } // END success
+  }); //END ajax
+} // END getKoalas
 
 function saveKoala( newKoala ){
   console.log( 'in saveKoala', newKoala );
@@ -93,7 +91,7 @@ function saveKoala( newKoala ){
       getKoalas();
     } // end success
   }); //end ajax
-}
+} // END saveKoala()
 
 function displayKoalas(koalas) {
   let $tableBody = $('#viewKoalas');
@@ -112,14 +110,11 @@ function displayKoalas(koalas) {
           $tr.append($('<td>').addClass(keys[col]).text(koalas[row][keys[col]])[0]);
         }
     } // end col loop
-    
-    
     $tableBody.append($tr);
     if($('.ready_to_transfer:last').text() === 'N' ){
       $('.ready_to_transfer:last').append($('<button>').data('id', koalas[row].id).addClass('transfer-btn ml-2').text('Ready for Transfer')[0]);
     }
   } // end row loop
-
 } // end displayKoalas
 
 function deleteKoala(id) {
@@ -151,49 +146,8 @@ function updateTransfer(id) {
   }) // end fail
 } // end updateTransfer
 
-// get koala by id
-function getSingleKoala(id) {
-  $.ajax({
-    type: 'GET',
-    url: `/koala/${id}`,
-  }) // end GET
-  .done((response) => {
-    console.log('edit koala');
-    
-  showKoalaInfo(response);
-  }) // end done
-  .fail(function(error){
-    console.log(error);
-  })
-} // end editKoala
-
-function showKoalaInfo(koala) {
-  let newKoala = {
-    id: koala[0].id,
-    name: koala[0].name,
-    age: koala[0].age,
-    gender: koala[0].gender, 
-    ready_to_transfer: koala[0].ready_to_transfer,
-    notes: koala[0].notes
-  };
-
-  $('#nameIn').val(koala[0].name);
-  $('#ageIn').val(koala[0].age);
-  $('#genderIn').val(koala[0].gender);
-  $('#readyForTransferIn').val(koala[0].ready_to_transfer);
-  $('#notesIn').val(koala[0].notes);
-  $('#addKoala').append('<button id="updateBtn">Update Koala Info</button>');
-
-  $('#updateBtn').on('click', function() {
-    
-    updateKoala(newKoala);
-  }) // end update button click
-} // end showKoalaInfo
-
 
 function updateKoala(newKoala) {
-  console.log(newKoala);
-  
   $.ajax({
     type: 'PUT',
     url: `koala/edit/${newKoala.id}`, // this is the ID of the koala we want to change in the database
@@ -202,10 +156,8 @@ function updateKoala(newKoala) {
     console.log(response);
     getKoalas();
   }).fail(function(error){
-    console.log(error);
-    
-  })
-
+    console.log(error); 
+  }); // END ajax PUT
 } // end updateTransfer
 
 
@@ -216,15 +168,12 @@ function prepareForEdit(id){
   let gender = $(`#tr${id} .gender`).text();
   let age = $(`#tr${id} .age`).text()
   let readyForTransfer = $(`#tr${id} .ready_to_transfer`).text();
-  let notes = $(`#tr${id} .notes`).text()
-  
-  $(`#tr${id} .name`).empty().append($('<input>').attr({ 'type':'text', 'id':'nameIn' }).val(name));
-  $(`#tr${id} .gender`).empty().append($(`<select>`).attr({ 'id':'genderIn' }).append($('<option>').val('M').text('M'), $('<option>').val('F').text('F')));
-  $(`#tr${id} .age`).empty().append($('<input>').attr({ 'type':'number', 'id':'ageIn' }).val(age));
-  $(`#tr${id} .ready_to_transfer`).empty().append($(`<select>`).attr({ 'id':'readyForTransferIn', 'value':readyForTransfer }).append($('<option>').val('Y').text('Y'), $('<option>').val('N').text('N')));
-  $(`#tr${id} .notes`).empty().append($('<input>').attr({ 'type':'text', 'id':'notesIn' }).val(notes));
+  let notes = $(`#tr${id} .notes`).text();
 
-  //console.log($(`#tr${id} #nameIn`).val());
-  
-}
+  $(`#tr${id} .name`).empty().append($('<input>').attr({ 'type':'text', 'id':'nameIn' }).val(name));
+  $(`#tr${id} .gender`).empty().append($(`<select>`).attr({ 'id': 'genderIn' }).append($('<option>').val('Other').text('Other'), $('<option>').val('M').text('M'), $('<option>').val('F').text('F')));
+  $(`#tr${id} .age`).empty().append($('<input>').attr({ 'type':'number', 'id':'ageIn' }).val(age));
+  $(`#tr${id} .ready_to_transfer`).empty().append($(`<select>`).attr({ 'id': 'readyForTransferIn', 'value': readyForTransfer }).append($('<option>').val('-').text('-'), $('<option>').val('Y').text('Y'), $('<option>').val('N').text('N')));
+  $(`#tr${id} .notes`).empty().append($('<input>').attr({ 'type':'text', 'id':'notesIn' }).val(notes));
+} // END prepareForEdit()
 
