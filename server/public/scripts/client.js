@@ -21,10 +21,12 @@ $( document ).ready( function(){
     // call saveKoala with the new obejct
     saveKoala( objectToSend );
   }); //end addButton on click
+
   $('#viewKoalas').on('click', '.deleteBtn', function() {
     const koalaId = $(this).data('id');
     deleteKoala(koalaId);
   }) // end delete koala
+
   $('#viewKoalas').on('click', '.transfer-btn', function() {
     let id = $(this).data('id');
     updateTransfer(id);
@@ -32,9 +34,9 @@ $( document ).ready( function(){
 
   $('#viewKoalas').on('click', '.editBtn', function() {
     let id = $(this).data('id');
-    // write a function that converts all of the table fields into input fields
-    //  - each input will hold the current table cell data as a value that can be edited
-    prepareForEdit(id);
+    $(`#tr${id}`).append($('<button>').addClass('saveEdit').data('id', id).text('save'), $('<button>').addClass('cancelEdit').data('id', id).text('cancel'));
+    prepareForEdit(id); 
+    
 
     //getSingleKoala(id);
   }) // end edit button click
@@ -181,12 +183,17 @@ function updateKoala(newKoala) {
  // write a function that converts all of the table fields into input fields
     //  - each input will hold the current table cell data as a value that can be edited
 function prepareForEdit(id){
-  // 
-  $(`#tr${id} .gender`).empty().append($(`<select>`).attr({'id':'genderIn'}).append($('<option>').val('').text('M')));
-    /*< option value = "" disabled selected > Gender</option >
-    <option value="M">M</option>
-    <option value="F">F</option>
-      </select >`));
-  */
+  let name = $(`#tr${id} .name`).text();
+  let gender = $(`#tr${id} .gender`).text();
+  let age = $(`#tr${id} .age`).text()
+  let readyForTransfer = $(`#tr${id} .ready_to_transfer`).text();
+  let notes = $(`#tr${id} .notes`).text()
+  
+  $(`#tr${id} .name`).empty().append($('<input>').attr({ 'type':'text', 'id':'nameIn' }).val(name));
+  $(`#tr${id} .gender`).empty().append($(`<select>`).attr({ 'id':'genderIn' }).append($('<option>').val('M').text('M'), $('<option>').val('F').text('F')));
+  $(`#tr${id} .age`).empty().append($('<input>').attr({ 'type':'number', 'id':'ageIn' }).val(age));
+  $(`#tr${id} .ready_to_transfer`).empty().append($(`<select>`).attr({ 'id':'readyForTransferIn', 'value':readyForTransfer }).append($('<option>').val('Y').text('Y'), $('<option>').val('N').text('N')));
+  $(`#tr${id} .notes`).empty().append($('<input>').attr({ 'type':'text', 'id':'notesIn' }).val(notes));
+
 }
 
